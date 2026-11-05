@@ -281,7 +281,7 @@ textarea.inp{resize:none;min-height:58px;line-height:1.4;margin-bottom:0;}
 
 <script>
 
-var VER="v2.55";
+var VER="v2.56";
 var IA_MODEL="claude-haiku-4-5-20251001"; // haiku par defaut, plus stable
 var EJS_SVC="service_hssc7wr",EJS_TPL="template_a169oti",EJS_KEY="SIFjIPjAKNPhqXzqX";
 var CDN_CLOUD="dcvlt0knw",CDN_PRESET="xod3bao3";
@@ -480,6 +480,7 @@ ETAPE 1 - Identifie le fournisseur en cherchant son nom ou logo sur la fiche :
 - VETRERIA ETRUSCA
 - VITIVIN
 - AMORIM
+- APHOLOS (logo orange, etiquette souvent photographiee a l envers)
 - Autre fournisseur non liste
 
 ETAPE 2 - Applique les regles du fournisseur detecte :
@@ -644,6 +645,14 @@ code: Champ CLIENT ARTICLE CODE (ex: 9432).
 lot: Champ LOT (ex: 1101854353).
 quantite: Champ QUANTIDADE (MIL) = quantite en milliers, multiplier par 1000 (ex: 2,000 -> 2000).
 num_palette: Champ Numero caisse (ex: 14/250).
+
+=== APHOLOS ===
+fournisseur: APHOLOS
+code: Champ COD en grands caracteres en haut (ex: TP-MM2P3-230-19/38-ZP-O13-G0101). Recopier caractere par caractere avec tirets et slash. PAS la ligne DESC.
+lot: Suite de chiffres avec slash en bas de l etiquette (ex: 62209/1). Uniquement les chiffres et le slash, PAS le texte au-dessus (ex: PI LIONB).
+quantite: Champ QUANTITY, nombre en gros devant UNITS (ex: 165).
+num_palette: null.
+Ignorer les annotations manuscrites au stylo (lettres entourees, dates).
 
 === AUTRE FOURNISSEUR ===
 Si le fournisseur n est pas dans la liste : faire de son mieux pour identifier les champs code, lot, fournisseur, quantite, num_palette.
