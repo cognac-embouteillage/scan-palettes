@@ -281,7 +281,7 @@ textarea.inp{resize:none;min-height:58px;line-height:1.4;margin-bottom:0;}
 
 <script>
 
-var VER="v2.56";
+var VER="v2.58";
 var IA_MODEL="claude-haiku-4-5-20251001"; // haiku par defaut, plus stable
 var EJS_SVC="service_hssc7wr",EJS_TPL="template_a169oti",EJS_KEY="SIFjIPjAKNPhqXzqX";
 var CDN_CLOUD="dcvlt0knw",CDN_PRESET="xod3bao3";
@@ -459,7 +459,10 @@ function analyseIA(b64){
 ETAPE 1 - Identifie le fournisseur en cherchant son nom ou logo sur la fiche :
 - SAVERGLASS ou SAVER GLASS
 - SOFPO ou ROSSMANN
-- Guala Closures ou GUALA
+- Guala Closures Technologia Ukraine (Guala + Ukraine sur l etiquette) -> regles GUALA UKRAINE
+- Guala Closures DGS Poland (Guala + Poland ou Wloclawek) -> regles GUALA POLAND
+- Guala Closures ou GUALA (autres sites Guala) -> regles GUALA CLOSURES
+- DS SMITH ou DS Smith Packaging
 - COLIEGE METALCO ou METALCO
 - Smurfit Westrock ou SMURFIT
 - Vetropack ou VETROPACK
@@ -599,10 +602,11 @@ num_palette: Champ N de Palettes (ex: 10 of 28).
 
 === RIVERCAP FRANCE ===
 fournisseur: RIVERCAP
-code: Champ B.D.L. / Product N. (ex: E0161460).
-lot: Champ N. scheda Prg (ex: ET012786).
-quantite: Champ Quantita/Quantity, enlever les points (ex: 3,150 -> 3150).
-num_palette: Champ Num. scatola (ex: 110).
+code: Champ B.D.L. / Product N., a gauche au niveau de Articolo, lettre E suivie de 7 chiffres (ex: E0161460). PAS le grand code en bas a gauche (ex: 5130831ENO), PAS le numero sous le code-barre en haut (ex: ET0874586), PAS Ord. Cliente.
+lot: Valeur a droite de N. scheda Prg, au niveau de Height (ex: ET012786). PAS le numero sous le code-barre en haut a droite (ex: ET0874586) qui commence aussi par ET. PAS Conf. ordine.
+quantite: Champ Quantita/Quantity. La virgule ou le point est un separateur de milliers : 3,150 -> 3150 (jamais 3.15 ni 3). Enlever virgules, points et espaces.
+num_palette: Champ Num. scatola, grand nombre en gras (ex: 110). PAS CDL (ex: 178), PAS Tot Colli Ord (ex: 180).
+Ignorer les textes pales visibles en transparence (fantomes d une autre etiquette) et les annotations manuscrites (date, heure, chiffre entoure).
 
 === GOFROKOMPLEKT (fiche en russe) ===
 fournisseur: GOFROKOMPLEKT
@@ -653,6 +657,30 @@ lot: Suite de chiffres avec slash en bas de l etiquette (ex: 62209/1). Uniquemen
 quantite: Champ QUANTITY, nombre en gros devant UNITS (ex: 165).
 num_palette: null.
 Ignorer les annotations manuscrites au stylo (lettres entourees, dates).
+
+=== GUALA UKRAINE (Guala Closures Technologia Ukraine LLC) ===
+fournisseur: Guala Closures Ukraine
+code: Champ Code a gauche, nombre de 10 chiffres (ex: 8119414710). PAS le Produkt code encadre en haut a droite (ex: 29920), PAS le code CA9P41.
+lot: Champ Produced = date de fabrication (ex: 30.07.2026).
+quantite: Champ Quantity, nombre uniquement sans pcs (ex: 9400 pcs -> 9400).
+num_palette: Champ No box (ex: 34).
+Ignorer les annotations manuscrites au stylo.
+
+=== GUALA POLAND (Guala Closures DGS Poland) ===
+fournisseur: Guala Closures Poland
+code: Champ CUSTOMER CODE, sans le point au debut (ex: .MCAPRHSE02994 -> MCAPRHSE02994). PAS le champ CODE (ex: 100000006785).
+lot: Champ BATCH (ex: 1001228208).
+quantite: Champ COUNT/LICZBA (ex: 1100).
+num_palette: Nombre entre parentheses a la fin du PROD ORDER NUMBER (ex: 1027325/005(0123) -> 0123).
+Ignorer les annotations manuscrites au stylo.
+
+=== DS SMITH ===
+fournisseur: DS SMITH
+code: Champ CODE PRODUIT / PRODUCT CODE, uniquement le nombre sans le texte qui suit (ex: 8151069020 DISPLAY -> 8151069020). PAS le N PRODUIT en tres gros (ex: 0267), PAS le N CLIENT.
+lot: Champ CONFIRMATION SEQ (lot) / ORDER BATCH N, sans espaces (ex: 71376 /01 -> 71376/01).
+quantite: Champ QTE PALETTE / QTY PALLET (ex: 1600).
+num_palette: Champ CHRONO (ex: 22).
+Ignorer les annotations manuscrites au stylo.
 
 === AUTRE FOURNISSEUR ===
 Si le fournisseur n est pas dans la liste : faire de son mieux pour identifier les champs code, lot, fournisseur, quantite, num_palette.
